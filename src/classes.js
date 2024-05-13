@@ -183,8 +183,6 @@ class BackgroundParticle {
   }
 }
 
-// const powerUp = new PowerUp({ X: 100, y: 100, velocity: { x: 0, y: 0 } });
-
 class PowerUp {
   constructor({ position = { x: 0, y: 0 }, velocity }) {
     this.position = position;

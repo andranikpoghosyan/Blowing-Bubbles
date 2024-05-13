@@ -10,9 +10,6 @@ const modalScoreEl = document.querySelector("#modalScoreEl");
 const buttonEl = document.querySelector("#buttonEl");
 const startButtonEl = document.querySelector("#startButtonEl");
 const startModalEl = document.querySelector("#startModalEl");
-const inputValue = document.querySelector("#inputUsername");
-const username = document.querySelector("#usernameEl");
-const formId = document.querySelector("#formId");
 const scoreContainerSpan = document.querySelector("#scoreContainerSpan");
 const volumeUpEl = document.querySelector("#volumeUpEl");
 const volumeOffEl = document.querySelector("#volumeOffEl");
@@ -64,7 +61,6 @@ function init() {
       );
     }
   }
-  // scoreContainerSpan.innerHTML = `${inputValue.value}'s score:`;
 }
 function spawnEnemies() {
   intervalId = setInterval(() => {
@@ -167,14 +163,12 @@ function animate() {
       player.y - powerUp.position.y
     );
 
-    // gain power up
     if (dist < powerUp.image.height / 2 + player.radius) {
       powerUps.splice(i, 1);
       player.powerUp = "MachineGun";
       player.color = "yellow";
       audio.powerUpNoise.play();
 
-      // power up runs out
       setTimeout(() => {
         player.powerUp = null;
         player.color = "white";
@@ -182,8 +176,7 @@ function animate() {
     }
   }
 
-  // machine gun animation / implementation
-  if (player.powerUp === "MachineGun") {
+  if (player.powerUp == "MachineGun") {
     const angle = Math.atan2(
       mouse.position.y - player.y,
       mouse.position.x - player.x
@@ -193,13 +186,13 @@ function animate() {
       y: Math.sin(angle) * 5,
     };
 
-    if (frames % 2 === 0) {
+    if (frames % 2 == 0) {
       projectiles.push(
         new Projectile(player.x, player.y, 5, "yellow", velocity)
       );
     }
 
-    if (frames % 5 === 0) {
+    if (frames % 5 == 0) {
       audio.shoot.play();
     }
   }
@@ -219,7 +212,6 @@ function animate() {
 
     projectile.update();
 
-    // remove from edges of screen
     if (
       projectile.x - projectile.radius < 0 ||
       projectile.x - projectile.radius > canvas.width ||
@@ -237,7 +229,6 @@ function animate() {
 
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
 
-    // end game
     if (dist - enemy.radius - player.radius < 1) {
       cancelAnimationFrame(animationId);
       clearInterval(intervalId);
@@ -267,9 +258,7 @@ function animate() {
 
       const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
 
-      // when projectiles touch enemy
       if (dist - enemy.radius - projectile.radius < 1) {
-        // create explosions
         for (let i = 0; i < enemy.radius * 2; i++) {
           particles.push(
             new Particle(
@@ -284,7 +273,6 @@ function animate() {
             )
           );
         }
-        // this is where we shrink our enemy
         if (enemy.radius - 10 > 5) {
           audio.damageTaken.play();
           score += 100;
@@ -301,7 +289,6 @@ function animate() {
           });
           projectiles.splice(projectilesIndex, 1);
         } else {
-          // remove enemy if they are too small
           audio.explode.play();
           score += 150;
           scoreEl.innerHTML = score;
@@ -313,7 +300,6 @@ function animate() {
             score: 150,
           });
 
-          // change background particle colors
           backgroundParticles.forEach((backgroundParticle) => {
             gsap.set(backgroundParticle, {
               color: "white",
@@ -323,7 +309,6 @@ function animate() {
               color: enemy.color,
               alpha: 0.1,
             });
-            // backgroundParticle.color = enemy.color
           });
 
           enemies.splice(index, 1);
@@ -482,24 +467,5 @@ window.addEventListener("keydown", (e) => {
     case "s":
       player.velocity.y += 2;
       break;
-  }
-});
-
-formId.addEventListener("keydown", function (e) {
-  if (e.key == "Enter") {
-    e.preventDefault();
-    init();
-    animate();
-    spawnEnemies();
-    startModalEl.style.display = "none";
-    gsap.to("#startModalEl", {
-      opacity: 0,
-      scale: 0.8,
-      duration: 0.2,
-      ease: "expo.in",
-      onComplete: () => {
-        startModalEl.style.display = "none";
-      },
-    });
   }
 });
