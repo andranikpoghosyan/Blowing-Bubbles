@@ -358,14 +358,14 @@ const mouse = {
   },
 };
 
-addEventListener("mousemove", (event) => {
-  mouse.position.x = event.clientX;
-  mouse.position.y = event.clientY;
+addEventListener("mousemove", (e) => {
+  mouse.position.x = e.clientX;
+  mouse.position.y = e.clientY;
 });
 
-addEventListener("touchmove", (event) => {
-  mouse.position.x = event.touches[0].clientX;
-  mouse.position.y = event.touches[0].clientY;
+addEventListener("touchmove", (e) => {
+  mouse.position.x = e.touches[0].clientX;
+  mouse.position.y = e.touches[0].clientY;
 });
 
 buttonEl.addEventListener("click", () => {
